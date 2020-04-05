@@ -1,0 +1,204 @@
+package second_paper;
+	import java.io.File;
+	import java.util.ArrayList;
+	import java.io.BufferedReader;
+	import java.io.BufferedWriter;
+	import java.io.FileReader;
+	import java.io.FileWriter;
+	import java.io.IOException;
+	import java.io.PrintWriter;
+	import java.io.RandomAccessFile;
+	import java.util.Scanner;
+	import java.io.*;
+
+	import org.apache.commons.io.FileUtils;
+
+	public class oslo {
+// this program is the simulation of OSLo where the query forwarding node will not forward his own query or QFN does not forward his query
+		static ArrayList<String> readq(String filename){
+			//this fun (readq) reads a file and place all lines/queries into arraylist
+			ArrayList <String >al=new ArrayList();
+			File f=new File(filename);
+			try {
+				Scanner sc=new Scanner(new FileReader(f));
+				while(sc.hasNext()){
+					al.add(sc.nextLine().toString());
+				}
+				sc.close();
+				}catch(IOException e){
+				System.out.println("problem in reading"+e.getMessage());
+			}
+		//	System.out.println(al);
+			return al;
+		}
+		
+		static ArrayList<String> des(ArrayList<String >x, ArrayList<String>filename, String fts){
+			//System.out.println(x);
+			String xfname=null;
+			int t=0;
+			File f1=null;
+			BufferedReader br=null;
+			FileWriter fw=null;
+			BufferedWriter bw=null;
+			File folder=new File("D:\\simulationwithorignal\\oslo\\noproxy\\four group\\");
+			File listf[]=folder.listFiles();
+			for(int j=0;j<filename.size();j++){
+				if(filename.get(j).endsWith(".txt")&&filename.get(j)!=fts){
+					try{
+						f1=new File("D:\\simulationwithorignal\\oslo\\noproxy\\four group\\"+filename.get(j));
+						br=new BufferedReader(new FileReader(f1));
+						String s= br.readLine().toString();
+						int y=Integer.parseInt(s);
+						if(y==0){
+							br.close();
+							continue;
+						}
+						else{
+					//	System.out.println(y);
+						y--;
+							String xx=Integer.toString(y);
+						//	System.out.println("xx"+xx);
+							s=s.replaceAll(s,xx);
+							RandomAccessFile raf= new RandomAccessFile("D:\\simulationwithorignal\\oslo\\noproxy\\four group\\"+filename.get(j),"rw");
+						raf.seek(0);
+						raf.writeBytes(s+"\n");
+						//System.out.println(s+"ss");
+						br.close();
+					fw=new FileWriter("D:\\simulationwithorignal\\oslo\\noproxy\\four group\\"+filename.get(j),true);
+						 bw= new BufferedWriter(fw);
+						bw.append("\r\n"+x.get(t));
+						t++;
+						xfname=filename.get(j);
+						bw.close();
+						
+						}
+					}catch(IOException e){
+						System.out.println(e.getMessage()+"IOException");
+					}catch (IndexOutOfBoundsException a){
+						break;
+						
+					}catch(NullPointerException npe){
+						//System.out.println("npe");
+						//winorfile(null);
+					}
+				}
+			}
+			ArrayList<String>sal=new ArrayList();
+			//sal=null;
+			System.out.println(t+" "+x.size());
+			if(t<x.size()){
+				for(int r=t;r<x.size();r++){
+					sal.add(x.get(r));
+				}
+			}
+			//System.out.println(sal);
+			//sal.add(null);
+			if(sal.size()>1)
+				{
+				try{
+					bw.close();
+				}catch(IOException e){
+					System.out.println(e.getMessage()+"io exception in 2nd fun");
+				}catch(NullPointerException npe1){System.out.println("npe1++"+npe1.getMessage());}
+				//winorfile(sal);
+				return sal;
+				}
+			else
+			{
+				try{
+					bw.close();
+				//	PrintWriter ps=new PrintWriter(new FileWriter("D:\\60users\\"+xfname));
+				//	ps.close();
+					
+				}catch(IOException e){
+					System.out.println(e.getMessage()+"io exception in sec fun");
+				}catch(NullPointerException npe2){System.out.println("npe2"+npe2.getMessage());}
+				//winorfile(null);
+				return sal;
+			}
+		}
+		
+		static void winorfile(ArrayList<String>xx, String wfn){
+			File f=new File(wfn);
+			File d=new File("D:\\simulationwithorignal\\1000 original\\");
+			//System.out.println("xx is"+xx);
+			PrintWriter pw=null;
+			boolean success=false;
+				if(f.length()<1)
+				{ 
+				//	System.out.println(f.delete());
+				//	System.out.println(f.length());
+			success=f.delete();
+			//System.out.println(success);
+				}
+			//System.out.println("size"+xx.size());
+			else if(f.length()>1)
+			{
+				try{	
+				 pw=new PrintWriter(new FileWriter(wfn));
+				for(int m=0;m<xx.size();m++){
+					pw.write(xx.get(m)+"\r\n");
+				}
+				pw.close();
+			}catch(IOException e){
+				System.out.println(e.getMessage()+"io exp in las fun");
+			}catch(NullPointerException np){
+				System.out.println(np.getMessage()+"null point exception in last fun");
+			}
+			try{
+				//System.out.println("check");
+				pw.close();
+				FileUtils.moveFileToDirectory(f,d,true);
+			}catch(IOException e){
+				System.out.println("cant move excep"+e.getMessage());
+			}
+			}
+		}
+		static void delempf(String name){
+			File f= new File(name);
+		//	System.out.println(f.length());
+			if(f.length()<1)
+				System.out.println(f.delete());
+
+		}
+		
+		public static void main(String args[])
+		{
+			int gi=0,gj=0;
+			File fl= new File("D:\\simulationwithorignal\\1000 original\\");
+			File list[]=fl.listFiles();
+			while(list.length>3)
+			{
+			poshida1shuf obj=new poshida1shuf();
+			obj.shuf(); gi++;
+			System.out.println("gi is "+gi);
+			ArrayList<String>x=new ArrayList();
+			ArrayList<String>y=new ArrayList();
+			ArrayList <String>alsad=new ArrayList();
+			ArrayList<String>alsnm=new ArrayList();
+			String gf="D:\\simulations\\group\\" ;
+				File gfile=new File(gf);
+					File filelist[]=gfile.listFiles();
+					
+					for(int j=0;j<filelist.length;j++){
+						alsad.add(filelist[j].getAbsolutePath().toString());
+						alsnm.add(filelist[j].getName().toString());
+				}
+					//System.out.println(alsad);
+					for(int k=0;k<alsad.size();k++){
+						x=readq(alsad.get(k));
+					y=des(x, alsnm,alsnm.get(k));// sending all queries in variable x and name of all files in group
+					winorfile(y,alsad.get(k));
+					delempf(alsad.get(k));
+					gj++;
+					}
+					poshida1delempfile obj1 = new poshida1delempfile();
+					File f=new File("D:\\simulationwithorignal\\1000 original\\");
+					File flist[]=f.listFiles();
+					for(int i=0;i<flist.length;i++){
+						obj1.delempf(flist[i].getAbsolutePath());
+					}
+	System.out.println("gi is "+gi+" gj is "+gj);
+			}
+		}
+}
